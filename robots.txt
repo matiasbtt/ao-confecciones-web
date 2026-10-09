@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://matiasbtt.github.io/ao-confecciones-web/sitemap.xml
