@@ -1,0 +1,142 @@
+[
+  {
+    "numero": 2,
+    "nombre": "Top Canela",
+    "slug": "top-canela-manga-larga-frizada-p02",
+    "categoria": "Tops",
+    "descripcion": "Top con mangas largas de color café. Cuello redondo clásico. Tejido elástico y ligero. Diseño versátil. Tela frizada.",
+    "precio_docena": 300,
+    "precio_unidad": 30,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 3,
+    "nombre": "Top Terracota",
+    "slug": "top-terracota-p03",
+    "categoria": "Tops",
+    "descripcion": "Top con mangas cortas de color terracota. Cuello redondo clásico. Tejido elástico y ligero. Diseño versátil.",
+    "precio_docena": 260,
+    "precio_unidad": 27,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 4,
+    "nombre": "Top Canela Marrón",
+    "slug": "top-canela-marron-p04",
+    "categoria": "Tops",
+    "descripcion": "Top sin mangas de color canela marrón. Cuello de camisa clásico con solapa en V. Tejido elástico y ligero. Ajuste ceñido al cuerpo.",
+    "precio_docena": 260,
+    "precio_unidad": 27,
+    "destacada_en_inicio": false
+  },
+  {
+    "numero": 5,
+    "nombre": "Top Canela",
+    "slug": "top-canela-cuello-v-p05",
+    "categoria": "Tops",
+    "descripcion": "Top con mangas largas de color café. Cuello en V pronunciado con detalle de fruncido central ajustable y lazo de cordón en el dobladillo. Tejido elástico y ligero. Diseño versátil.",
+    "precio_docena": 260,
+    "precio_unidad": 27,
+    "destacada_en_inicio": false
+  },
+  {
+    "numero": 6,
+    "nombre": "Top Canela",
+    "slug": "top-canela-cuello-redondo-p06",
+    "categoria": "Colección",
+    "descripcion": "La imagen de esta ficha muestra una prenda de tirantes a cuadros. El catálogo la titula «Top Canela». Confirma con A&O la correspondencia del modelo antes de comprar.",
+    "precio_docena": 360,
+    "precio_unidad": 35,
+    "destacada_en_inicio": false
+  },
+  {
+    "numero": 7,
+    "nombre": "Top Girasoles",
+    "slug": "top-girasoles-p07",
+    "categoria": "Tops",
+    "descripcion": "Top ligero y fresco ideal para días soleados. Escote elástico tipo bardot. Mangas cortas con elástico. Diseño cruzado en tiras ajustables. Estampado de girasoles vibrante.",
+    "precio_docena": 180,
+    "precio_unidad": 20,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 8,
+    "nombre": "Top Beige",
+    "slug": "top-beige-p08",
+    "categoria": "Tops",
+    "descripcion": "Top básico manga corta. Cuello redondo clásico. Tejido elástico y ligero.",
+    "precio_docena": 260,
+    "precio_unidad": 27,
+    "destacada_en_inicio": false
+  },
+  {
+    "numero": 9,
+    "nombre": "Top Café",
+    "slug": "top-cafe-p09",
+    "categoria": "Tops",
+    "descripcion": "Top con mangas cortas. Escote en V con contraste blanco. Tejido elástico y ligero. Ajuste ceñido al cuerpo. Diseño versátil.",
+    "precio_docena": 260,
+    "precio_unidad": 27,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 10,
+    "nombre": "Top de Tirantes",
+    "slug": "top-de-tirantes-p10",
+    "categoria": "Tops",
+    "descripcion": "Top femenino con hombros descubiertos. Escote en V que estiliza. Tejido ligero y cómodo. Estampado a rayas verticales.",
+    "precio_docena": 180,
+    "precio_unidad": 20,
+    "destacada_en_inicio": false
+  },
+  {
+    "numero": 11,
+    "nombre": "Short Falda Lila",
+    "slug": "short-falda-lila-p11",
+    "categoria": "Shorts y faldas",
+    "descripcion": "Short falda a rayas. Diseño cruzado con botones. Tiro alto que estiliza la figura. Tejido ligero y fresco.",
+    "precio_docena": 360,
+    "precio_unidad": 35,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 12,
+    "nombre": "Vestido a Cuadros Clásico",
+    "slug": "vestido-a-cuadros-clasico-p12",
+    "categoria": "Vestidos",
+    "descripcion": "Vestido estilo jardinera con estampado de cuadros clásico. Tirantes ajustables con botones. Bolsillo frontal funcional. Corte recto y cómodo.",
+    "precio_docena": 360,
+    "precio_unidad": 35,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 13,
+    "nombre": "Top de Dragón",
+    "slug": "top-de-dragon-p13",
+    "categoria": "Tops",
+    "descripcion": "Top con mangas largas de color negro con estampado de dragones. Cuello redondo clásico. Tejido elástico y ligero. Diseño versátil.",
+    "precio_docena": 260,
+    "precio_unidad": 27,
+    "destacada_en_inicio": false
+  },
+  {
+    "numero": 14,
+    "nombre": "Chaqueta a Cuadros Camel",
+    "slug": "chaqueta-a-cuadros-camel-p14",
+    "categoria": "Chaquetas",
+    "descripcion": "Chaqueta estilo sobrecamisa con estampado de cuadros en tono camel, blanco y negro. Cuello clásico. Cierre frontal con cremallera. Manga larga con puño. Tejido cálido, suave y resistente.",
+    "precio_docena": 600,
+    "precio_unidad": 55,
+    "destacada_en_inicio": true
+  },
+  {
+    "numero": 15,
+    "nombre": "Chaqueta a Cuadros Verde",
+    "slug": "chaqueta-a-cuadros-verde-p15",
+    "categoria": "Chaquetas",
+    "descripcion": "Chaqueta estilo sobrecamisa con estampado de cuadros en tono verde, negro y blanco. Cuello clásico. Cierre frontal con cremallera. Manga larga con puño. Tejido cálido, suave y resistente.",
+    "precio_docena": 600,
+    "precio_unidad": 55,
+    "destacada_en_inicio": true
+  }
+]

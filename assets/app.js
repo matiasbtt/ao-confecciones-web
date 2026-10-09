@@ -10,11 +10,11 @@ const message=document.getElementById('inquiry-message');
 const escapeHtml=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const track=(name,detail={})=>document.dispatchEvent(new CustomEvent('ao:event',{detail:{name,...detail}}));
 function save(){try{localStorage.setItem(key,JSON.stringify(selection));}catch{}updateCounters();}
-function updateCounters(){document.querySelectorAll('[data-selection-count]').forEach(el=>el.textContent=selection.length);document.querySelectorAll('[data-add-product]').forEach(el=>{const selected=selection.some(i=>i.id===el.dataset.addProduct);el.setAttribute('aria-pressed',String(selected));el.setAttribute('aria-label',`${selected?'Quitar de':'Agregar a'} la consulta: ${catalog.find(p=>p.id===el.dataset.addProduct)?.name||''}`);if(el.classList.contains('add-button'))el.innerHTML=selected?'<span aria-hidden="true">✓</span>':'<span aria-hidden="true">+</span>';else el.textContent=selected?'Agregada a tu consulta':'Agregar a mi consulta';});}
+function updateCounters(){document.querySelectorAll('[data-selection-count]').forEach(el=>{if(el.textContent!==String(selection.length)&&el.textContent!==''){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');el.addEventListener('animationend',()=>el.classList.remove('bump'),{once:true});}el.textContent=selection.length;});document.querySelectorAll('[data-add-product]').forEach(el=>{const selected=selection.some(i=>i.id===el.dataset.addProduct);el.setAttribute('aria-pressed',String(selected));el.setAttribute('aria-label',`${selected?'Quitar de':'Agregar a'} la consulta: ${catalog.find(p=>p.id===el.dataset.addProduct)?.name||''}`);if(el.classList.contains('add-button'))el.innerHTML=selected?'<span aria-hidden="true">✓</span>':'<span aria-hidden="true">+</span>';else el.textContent=selected?'Agregada a tu consulta':'Agregar a mi consulta';});}
 let statusTimer;
 function notify(text){const el=document.getElementById('status-message');el.textContent=text;el.hidden=false;clearTimeout(statusTimer);statusTimer=setTimeout(()=>el.hidden=true,3200);}
-function toggleProduct(id){if(!catalog.some(p=>p.id===id))throw new Error('Modelo no encontrado');const found=selection.findIndex(i=>i.id===id);if(found>=0){selection.splice(found,1);notify('Prenda retirada de tu consulta');}else{selection.push({id,quantity:''});track('add_to_inquiry',{product_id:id});notify('Prenda agregada a tu consulta');}save();if(dialog.open)renderInquiry();return {selected_ids:selection.map(i=>i.id)};}
-function generateMessage(){const lines=['Hola, A&O. Me interesa comprar para mi negocio. Quisiera consultar precio y disponibilidad de:',''];for(const item of selection){const p=catalog.find(p=>p.id===item.id);lines.push(`• ${p.name} (catálogo, pág. ${p.source_page})${item.quantity?` — cantidad orientativa: ${item.quantity} prendas`:''}`);}lines.push('','¿Cómo se arma la docena y cuáles son las condiciones de compra, pago y envío'+(city.value.trim()?` a ${city.value.trim()}`:'')+'?');return lines.join('\n');}
+function toggleProduct(id){if(!catalog.some(p=>p.id===id))throw new Error('Modelo no encontrado');const found=selection.findIndex(i=>i.id===id);if(found>=0){selection.splice(found,1);notify('Prenda retirada de tu consulta');}else{selection.push({id,quantity:''});track('add_to_inquiry',{product_id:id});notify('Prenda agregada a tu consulta');}save();document.querySelectorAll(`.add-button[data-add-product="${id}"]`).forEach(b=>{b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');b.addEventListener('animationend',()=>b.classList.remove('pop'),{once:true});});if(dialog.open)renderInquiry();return {selected_ids:selection.map(i=>i.id)};}
+function generateMessage(){const lines=['Hola, A&O. Me interesa comprar para mi negocio. Quisiera consultar precio y disponibilidad de:',''];for(const item of selection){const p=catalog.find(p=>p.id===item.id);lines.push(`• ${p.name} (catálogo, pág. ${p.source_page})${item.quantity?` - cantidad orientativa: ${item.quantity} prendas`:''}`);}lines.push('','¿Cómo se arma la docena y cuáles son las condiciones de compra, pago y envío'+(city.value.trim()?` a ${city.value.trim()}`:'')+'?');return lines.join('\n');}
 function refreshMessage(){message.value=generateMessage();const url='https://wa.me/59157736466?text='+encodeURIComponent(message.value);const link=document.getElementById('send-inquiry');link.href=url;link.hidden=url.length>7000;document.getElementById('long-message-note').hidden=url.length<=7000;}
 function renderInquiry(){const empty=selection.length===0;document.getElementById('inquiry-form').hidden=empty;document.getElementById('inquiry-footer').hidden=empty;body.innerHTML=empty?`<div class="inquiry-empty"><h3>Tu colección empieza aquí.</h3><p>Elige las prendas que te interesan para consultar sus precios y disponibilidad.</p><a class="button primary" href="${sitePath('/coleccion/')}">Explorar colección</a></div>`:selection.map(item=>{const p=catalog.find(p=>p.id===item.id);return `<div class="inquiry-item"><a href="${sitePath('/prendas/'+p.slug+'/')}"><img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" width="76" height="100"></a><div><h3><a href="${sitePath('/prendas/'+p.slug+'/')}">${escapeHtml(p.name)}</a></h3><p>Catálogo · pág. ${p.source_page}</p><label class="quantity-label">Cantidad orientativa<input type="number" min="1" max="9999" inputmode="numeric" data-quantity="${p.id}" value="${item.quantity}" placeholder="Opcional" aria-label="Cantidad orientativa de ${escapeHtml(p.name)}"></label></div><button class="icon-button" data-remove="${p.id}" aria-label="Quitar ${escapeHtml(p.name)}">×</button></div>`;}).join('');refreshMessage();}
 function openInquiry(){renderInquiry();dialog.showModal();document.body.style.overflow='hidden';}
@@ -74,3 +74,42 @@ function setupHeaderCursorZoom(){
  allowed.addEventListener('change',()=>{reset();measure();});document.fonts.ready.then(refresh);measure();
 }
 if(context?.registerTool){const lifecycle=new AbortController();const register=tool=>{try{Promise.resolve(context.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}};register({name:'read_collection',description:'Leer los modelos reales del catálogo de A&O y la selección actual.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:true},execute:()=>({products:catalog.map(p=>({id:p.id,name:p.name,category:p.category,source_page:p.source_page,url:sitePath('/prendas/'+p.slug+'/')})),selected_ids:selection.map(i=>i.id)})});register({name:'stage_inquiry_models',description:'Agregar modelos a la selección para consulta. No envía mensajes ni confirma pedidos.',inputSchema:{type:'object',properties:{product_ids:{type:'array',items:{type:'string'},minItems:1,maxItems:14}},required:['product_ids'],additionalProperties:false},annotations:{readOnlyHint:false},execute:input=>{if(!input||!Array.isArray(input.product_ids)||!input.product_ids.length||input.product_ids.length>14||input.product_ids.some(id=>typeof id!=='string'||!catalog.some(p=>p.id===id)))throw new Error('Referencias de prendas no válidas');for(const id of new Set(input.product_ids))if(!selection.some(i=>i.id===id))selection.push({id,quantity:''});save();openInquiry();return{selected_ids:selection.map(i=>i.id),message:message.value,status:'consulta_preparada'};}});window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});}
+
+/* ---- Movimiento: entradas por scroll y salida entre paginas ---- */
+(function setupMotion(){
+ const reduce=matchMedia('(prefers-reduced-motion:reduce)');
+ if(reduce.matches)return;
+ const root=document.documentElement;
+ /* Lado de salida de lo que ya animo al entrar (lo define el CSS) */
+ [['.nav-left','l'],['.nav-right','r'],['.hero-panel','l'],['.hero-photos','r'],['.detail-image','l'],['.detail-copy','r'],['.intro','l'],['[data-page=coleccion] .category-nav','l'],['.catalog-toolbar','r'],['.collection-intro>.text-link','r']]
+  .forEach(([sel,side])=>document.querySelectorAll(sel).forEach(el=>el.dataset.x=side));
+ /* Entrada al hacer scroll: izquierda -> desde la izquierda, derecha -> desde la derecha, centro -> desde abajo */
+ const targets=document.querySelectorAll('.section-heading>*,.product-card,.editorial-image,.split-copy,.brand-story>*,.closing .container>*,.footer-top>*,.footer-bottom,.wholesale-step,.conditions,.faq,.contact-box,.contact-social,.prose>*,.catalog-footer,.empty-results');
+ const watched=[];
+ targets.forEach(el=>{
+  if(el.closest('.hero,.intro,.product-detail-grid,.site-header,.inquiry-dialog'))return;
+  const r=el.getBoundingClientRect();
+  if(r.top<innerHeight*.98)return; /* ya visible al cargar: no tocarlo, evita parpadeo */
+  const cx=(r.left+r.width/2)/innerWidth;
+  const side=cx<.42?'l':cx>.58?'r':'b';
+  el.classList.add('rv');el.dataset.rv=side;if(side!=='b')el.dataset.x=side;watched.push(el);
+ });
+ if(!watched.length||!('IntersectionObserver' in window))return;
+ const io=new IntersectionObserver(entries=>{
+  const vis=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top||a.boundingClientRect.left-b.boundingClientRect.left);
+  vis.forEach((e,i)=>{e.target.style.setProperty('--rd',Math.min(i,5)*70+'ms');e.target.classList.add('in');io.unobserve(e.target);});
+ },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+ watched.forEach(el=>io.observe(el));
+ /* Salida: los lados se alejan y recien despues se cambia de pagina */
+ document.addEventListener('click',event=>{
+  if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  const a=event.target.closest('a[href]');
+  if(!a||a.target||a.hasAttribute('download'))return;
+  const url=new URL(a.href,location.href);
+  if(url.origin!==location.origin||(url.pathname===location.pathname&&url.search===location.search))return;
+  event.preventDefault();
+  root.classList.add('leaving');
+  setTimeout(()=>{location.href=url.href;},230);
+ });
+ window.addEventListener('pageshow',event=>{if(event.persisted)root.classList.remove('leaving');});
+})();
