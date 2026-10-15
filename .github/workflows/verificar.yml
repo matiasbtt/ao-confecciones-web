@@ -1,0 +1,16 @@
+name: Verificar sitio
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-al-dia:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Falla si alguien editó data/, paginas/ o plantillas/ y olvidó correr scripts/build.py
+      - run: python scripts/build.py --check
